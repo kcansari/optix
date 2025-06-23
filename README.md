@@ -41,10 +41,6 @@ make build
 - Go standard library
 
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Roadmap
 
 ### Current Status: Checkpoint 1
@@ -56,7 +52,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 -  ✅  Basic testing setup
 
 ### Next: Checkpoint 2 🚧
--   File reading functionality (txt, csv, json)
+- [ ] File reading functionality (txt, csv, json)
 - [ ] Content display commands
 - [ ] File statistics (line count, word count, size)
 - [ ] Enhanced error handling
@@ -76,3 +72,7 @@ Created by [kcansari](https://github.com/kcansari) - feel free to contact me!
 ---
 
 *This project is part of a Go learning journey. Each commit represents a step in understanding Go fundamentals through practical implementation.*
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
