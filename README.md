@@ -61,10 +61,6 @@ make build
 
 This is a learning project, but feel free to suggest improvements or report issues.
 
-## 📄 License
-
-This project is licensed under the MIT License.
-
 ## 📞 Contact
 
 Created by [kcansari](https://github.com/kcansari) - feel free to contact me!
