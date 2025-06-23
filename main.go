@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/kcansari/optix/cmd/optix"
 
 func main() {
-	fmt.Println("Hello, World!")
+	optix.Execute()
 }
