@@ -1,0 +1,6 @@
+Hello World!
+This is a sample text file for testing the Optix file processor.
+It contains multiple lines with different lengths.
+
+This line has more words than the previous ones.
+The file reader should be able to handle this content properly.

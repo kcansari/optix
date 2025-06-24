@@ -1,0 +1,15 @@
+{
+  "application": "Optix File Processor",
+  "version": "1.0.0",
+  "features": [
+    "File Reading",
+    "Statistics",
+    "Multiple Format Support"
+  ],
+  "supported_formats": {
+    "text": ".txt",
+    "csv": ".csv", 
+    "json": ".json"
+  },
+  "author": "kcansari"
+}
