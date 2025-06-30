@@ -1,0 +1,10 @@
+INFO: Application started successfully
+ERROR: Database connection failed
+DEBUG: Loading user preferences
+WARNING: Low disk space detected
+INFO: Processing 1000 records
+ERROR: Invalid configuration file
+DEBUG: Memory usage: 45%
+INFO: User authentication completed
+WARNING: API rate limit approaching
+ERROR: Failed to save user data

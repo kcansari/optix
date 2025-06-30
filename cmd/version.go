@@ -1,4 +1,4 @@
-package optix
+package cmd
 
 import (
 	"github.com/kcansari/optix/internal/version"
@@ -15,5 +15,5 @@ var versionCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(versionCmd)
+	RootCmd.AddCommand(versionCmd)
 }

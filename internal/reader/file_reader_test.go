@@ -1,6 +1,4 @@
-// Package reader_test provides comprehensive tests for the improved file reading functionality.
-// Tests focus on scalability, error handling, and extensibility improvements.
-package reader
+package reader_test
 
 import (
 	"errors"
@@ -9,6 +7,10 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/kcansari/optix/internal/reader"
+	"github.com/kcansari/optix/internal/reader/strategies"
+	"github.com/kcansari/optix/internal/types"
 )
 
 // TestTextFileReader tests the enhanced TextFileReader implementation.
@@ -17,7 +19,7 @@ func TestTextFileReader(t *testing.T) {
 	testFile := createTempFile(t, "test.txt", testContent)
 	defer os.Remove(testFile)
 
-	reader := &TextFileReader{}
+	reader := &strategies.TextFileReader{}
 
 	// Test SupportedExtensions method
 	supportedExts := reader.SupportedExtensions()
@@ -77,7 +79,7 @@ func TestCSVFileReader(t *testing.T) {
 	testFile := createTempFile(t, "test.csv", testContent)
 	defer os.Remove(testFile)
 
-	reader := &CSVFileReader{}
+	reader := &strategies.CSVFileReader{}
 
 	// Test multiple supported extensions
 	supportedExts := reader.SupportedExtensions()
@@ -127,7 +129,7 @@ func TestJSONFileReader(t *testing.T) {
 	testFile := createTempFile(t, "test.json", testContent)
 	defer os.Remove(testFile)
 
-	reader := &JSONFileReader{}
+	reader := &strategies.JSONFileReader{}
 
 	// Test multiple JSON format support
 	supportedExts := reader.SupportedExtensions()
@@ -166,7 +168,7 @@ func TestJSONFileReaderInvalidJSON(t *testing.T) {
 	testFile := createTempFile(t, "invalid.json", invalidJSON)
 	defer os.Remove(testFile)
 
-	reader := &JSONFileReader{}
+	reader := &strategies.JSONFileReader{}
 
 	_, err := reader.Read(testFile)
 	if err == nil {
@@ -198,7 +200,7 @@ func TestFileReaderStrategy(t *testing.T) {
 		os.Remove(jsonFile)
 	}()
 
-	strategy := NewFileReaderStrategy()
+	strategy := reader.NewFileReaderStrategy()
 
 	// Test dynamic supported types discovery
 	supportedTypes := strategy.GetSupportedTypes()
@@ -264,7 +266,7 @@ func TestFileReaderStrategyUnsupportedType(t *testing.T) {
 	testFile := createTempFile(t, "test.xyz", "some content")
 	defer os.Remove(testFile)
 
-	strategy := NewFileReaderStrategy()
+	strategy := reader.NewFileReaderStrategy()
 
 	_, err := strategy.ReadFile(testFile)
 	if err == nil {
@@ -284,7 +286,7 @@ func TestFileReaderStrategyUnsupportedType(t *testing.T) {
 
 // TestAddReader tests adding custom readers to the strategy.
 func TestAddReader(t *testing.T) {
-	strategy := NewFileReaderStrategy()
+	strategy := reader.NewFileReaderStrategy()
 	initialCount := strategy.GetReaderCount()
 
 	// Create and add a custom reader
@@ -334,7 +336,7 @@ func TestAddReader(t *testing.T) {
 
 // TestErrorWrapping tests that errors are properly wrapped for unwrapping.
 func TestErrorWrapping(t *testing.T) {
-	reader := &TextFileReader{}
+	reader := &strategies.TextFileReader{}
 
 	// Try to read a non-existent file
 	_, err := reader.Read("nonexistent.txt")
@@ -356,7 +358,7 @@ func TestLargeFileHandling(t *testing.T) {
 	testFile := createTempFile(t, "large.txt", largeContent)
 	defer os.Remove(testFile)
 
-	reader := &TextFileReader{}
+	reader := &strategies.TextFileReader{}
 	content, err := reader.Read(testFile)
 	if err != nil {
 		t.Fatalf("Failed to read large file: %v", err)
@@ -377,7 +379,7 @@ func TestLargeFileHandling(t *testing.T) {
 // TestBackwardCompatibility tests that the old NewReaderStrategy function still works.
 func TestBackwardCompatibility(t *testing.T) {
 	// Test deprecated function still works
-	strategy := NewReaderStrategy()
+	strategy := reader.NewFileReaderStrategy()
 	if strategy == nil {
 		t.Error("NewReaderStrategy should still work for backward compatibility")
 	}
@@ -393,7 +395,7 @@ type MockReader struct {
 }
 
 // Read implements the FileReader interface.
-func (r *MockReader) Read(filename string) (*FileContent, error) {
+func (r *MockReader) Read(filename string) (*types.FileContent, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open mock file '%s': %w", filename, err)
@@ -405,7 +407,7 @@ func (r *MockReader) Read(filename string) (*FileContent, error) {
 		return nil, fmt.Errorf("failed to get file info for '%s': %w", filename, err)
 	}
 
-	return &FileContent{
+	return &types.FileContent{
 		Content:   "mock content",
 		Lines:     []string{"mock content"},
 		FileType:  "mock",
@@ -449,7 +451,7 @@ func BenchmarkTextFileReader(b *testing.B) {
 	testFile := createTempFileForBenchmark(b, "benchmark.txt", content)
 	defer os.Remove(testFile)
 
-	reader := &TextFileReader{}
+	reader := &strategies.TextFileReader{}
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -465,7 +467,7 @@ func BenchmarkFileReaderStrategy(b *testing.B) {
 	testFile := createTempFileForBenchmark(b, "benchmark.txt", content)
 	defer os.Remove(testFile)
 
-	strategy := NewFileReaderStrategy()
+	strategy := reader.NewFileReaderStrategy()
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {

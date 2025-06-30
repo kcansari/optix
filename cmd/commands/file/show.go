@@ -1,13 +1,14 @@
-// Package optix contains the CLI commands for the Optix file processor.
+// Package file contains the CLI commands for the Optix file processor.
 // This file implements the 'show' command that displays file contents.
-package optix
+package file
 
 import (
 	"fmt" // Package for formatted I/O operations
 
-	"github.com/kcansari/optix/internal/reader"    // Our file reader package
-	"github.com/kcansari/optix/internal/validator" // Our file validator package
-	"github.com/spf13/cobra"                       // CLI framework
+	"github.com/kcansari/optix/cmd"                        // Our file reader package
+	"github.com/kcansari/optix/internal/reader/strategies" // Reader strategies
+	"github.com/kcansari/optix/internal/validator"         // Our file validator package
+	"github.com/spf13/cobra"                               // CLI framework
 )
 
 // showCmd represents the show command.
@@ -25,7 +26,7 @@ Supported file types:
 
 Examples:
   optix show myfile.txt     # Display a text file
-  optix show data.csv       # Display a CSV file  
+  optix show data.csv       # Display a CSV file
   optix show config.json    # Display a JSON file`,
 
 	// Args validates the number of command line arguments
@@ -51,7 +52,7 @@ Examples:
 
 		// Step 2: Read the file using our improved reader strategy
 		// Create a reader strategy that can handle multiple file types
-		readerStrategy := reader.NewFileReaderStrategy()
+		readerStrategy := strategies.NewDefaultFileReaderStrategy()
 
 		// Read the file - the strategy will automatically choose the right reader
 		content, err := readerStrategy.ReadFile(filename)
@@ -87,5 +88,5 @@ Examples:
 func init() {
 	// Add the show command to the root command
 	// This makes it available as 'optix show'
-	rootCmd.AddCommand(showCmd)
+	cmd.RootCmd.AddCommand(showCmd)
 }

@@ -1,0 +1,24 @@
+{
+  "application": {
+    "name": "Optix File Processor",
+    "version": "1.0.0",
+    "debug": true
+  },
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "name": "optix_db",
+    "ssl": false
+  },
+  "logging": {
+    "level": "DEBUG",
+    "format": "json",
+    "output": "stdout"
+  },
+  "features": {
+    "text_processing": true,
+    "csv_processing": false,
+    "json_processing": false,
+    "batch_processing": false
+  }
+}

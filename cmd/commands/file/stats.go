@@ -1,14 +1,16 @@
 // Package optix contains the CLI commands for the Optix file processor.
 // This file implements the 'stats' command that displays detailed file statistics.
-package optix
+package file
 
 import (
 	"fmt"     // Package for formatted I/O operations
 	"strings" // Package for string operations
 
-	"github.com/kcansari/optix/internal/reader"    // Our file reader package
-	"github.com/kcansari/optix/internal/validator" // Our file validator package
-	"github.com/spf13/cobra"                       // CLI framework
+	"github.com/kcansari/optix/cmd"
+	"github.com/kcansari/optix/internal/reader"            // Our file reader package
+	"github.com/kcansari/optix/internal/reader/strategies" // Reader strategies
+	"github.com/kcansari/optix/internal/validator"         // Our file validator package
+	"github.com/spf13/cobra"                               // CLI framework
 )
 
 // statsCmd represents the stats command.
@@ -57,7 +59,7 @@ Examples:
 		}
 
 		// Step 2: Read the file to get content for analysis
-		readerStrategy := reader.NewFileReaderStrategy()
+		readerStrategy := strategies.NewDefaultFileReaderStrategy()
 		content, err := readerStrategy.ReadFile(filename)
 		if err != nil {
 			return fmt.Errorf("failed to read file for statistics: %v", err)
@@ -274,5 +276,5 @@ func getBracketBalanceStatus(openB, closeB, openBr, closeBr int) string {
 
 // init registers the stats command with the root command.
 func init() {
-	rootCmd.AddCommand(statsCmd)
+	cmd.RootCmd.AddCommand(statsCmd)
 }

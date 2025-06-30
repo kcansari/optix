@@ -1,7 +1,7 @@
 package main
 
-import "github.com/kcansari/optix/cmd/optix"
+import "github.com/kcansari/optix/cmd"
 
 func main() {
-	optix.Execute()
+	cmd.Execute()
 }
